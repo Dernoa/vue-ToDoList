@@ -1,21 +1,76 @@
 <template>
     <div class="taskContainer">
         <div>
-            <h2>Tasks:</h2>
-        </div>
-        <div>
-            <div v-for="task in taskStore.tasks" :key="task.id">
-                <div class="taskContainerInfo">
-                    <div>
+            <h2>ToDo:</h2>
+            <div v-for="task in taskStore.tasks.values()" :key="task.id">
+                <div v-if="task.status == 'todo'">
+                    <div class="taskContainerInfo">
                         <div>
-                            <h2>{{ task.title }}</h2>
+                            <div>
+                                <h2>{{ task.title }}</h2>
+                            </div>
+                            <div>
+                                {{ task.description }}
+                            </div>
                         </div>
-                        <div>
-                            {{ task.description }}
+                        <div class="taskBtn">
+                            <my-button @click="switchStatus(task.id,1)">Start work</my-button>
                         </div>
                     </div>
-                    <div class="taskBtn">
-                        <my-button @click="taskComplete(task.id)">Completed</my-button>
+                </div>
+            </div>
+            <h2>In-progress:</h2>
+            <div v-for="task in taskStore.tasks.values()" :key="task.id">
+                <div v-if="task.status == 'in-progress'">
+                    <div class="taskContainerInfo">
+                        <div>
+                            <div>
+                                <h2>{{ task.title }}</h2>
+                            </div>
+                            <div>
+                                {{ task.description }}
+                            </div>
+                        </div>
+                        <div class="taskBtn">
+                            <my-button @click="switchStatus(task.id,2)">Done</my-button>
+                            <my-button @click="switchStatus(task.id,3)">Cancell</my-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>Done:</h2>
+            <div v-for="task in taskStore.tasks.values()" :key="task.id">
+                <div v-if="task.status == 'done'">
+                    <div class="taskContainerInfo">
+                        <div>
+                            <div>
+                                <h2>{{ task.title }}</h2>
+                            </div>
+                            <div>
+                                {{ task.description }}
+                            </div>
+                        </div>
+                        <div class="taskBtn">
+                            <my-button @click="removeTask(task.id)">Delete Task</my-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>Cancelled:</h2>
+            <div v-for="task in taskStore.tasks.values()" :key="task.id">
+                <div v-if="task.status == 'cancelled'">
+                    <div class="taskContainerInfo">
+                        <div>
+                            <div>
+                                <h2>{{ task.title }}</h2>
+                            </div>
+                            <div>
+                                {{ task.description }}
+                            </div>
+                        </div>
+                        <div class="taskBtn">
+                            <my-button @click="removeTask(task.id)">Delete Task</my-button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -36,11 +91,17 @@ import MyButton from '@/UI/myButton.vue';
         },
         components: {MyButton},
         methods: {
-            taskComplete(id){
+            removeTask(id){
                 if (id === undefined || id === null){
                     return;
                 }
                 this.taskStore.removeTask(id);
+            },
+            switchStatus(id, status){
+                if (id === undefined || id === null){
+                    return;
+                }
+                this.taskStore.switchStatus(id, status)
             }
         },
     }
