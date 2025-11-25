@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <div class="taskBtn">
-                            <my-button @click="removeTask(task.id)">Delete Task</my-button>
+                            <confirm-modal :task="task.id"></confirm-modal>>
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="taskBtn">
                             <my-button @click="switchStatus(task.id,1)">Start work</my-button>
-                            <my-button @click="removeTask(task.id)">Delete Task</my-button>
+                            <confirm-modal :task="task.id"></confirm-modal>
                         </div>
                     </div>
                 </div>
@@ -82,6 +82,7 @@
 <script>
 import { useTaskStore } from '@/stores/taskStore';
 import MyButton from '@/UI/myButton.vue';
+import ConfirmModal from './confirmModal.vue';
 
     export default {
         
@@ -90,7 +91,7 @@ import MyButton from '@/UI/myButton.vue';
                 taskStore: useTaskStore(),
             }
         },
-        components: {MyButton},
+        components: {MyButton, ConfirmModal},
         methods: {
             removeTask(id){
                 if (id === undefined || id === null){
