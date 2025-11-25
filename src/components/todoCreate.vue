@@ -26,12 +26,13 @@ import { useTaskStore } from '@/stores/taskStore';
         components: {MyInput, MyButton},
         data(){
             return {
+                taskStore: useTaskStore(),
                 task: {
                     title:'',
                     description:'',
+                    status: '',
                     id: Date.now(),
                 },
-                taskStore: useTaskStore(),
             }
         },
         methods:{
@@ -40,6 +41,7 @@ import { useTaskStore } from '@/stores/taskStore';
                     alert('Write something in task title')
                     return
                 }
+                this.task.status = this.taskStore.taskStatus[0];
                 this.taskStore.pushTask(this.task)
                 this.task.title = '';
                 this.task.description = '';
