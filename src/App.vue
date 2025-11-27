@@ -1,7 +1,9 @@
 <template>
     <div class="app">
         <my-navbar class="navbar-app"></my-navbar>
-        <router-view></router-view>
+        <keep-alive>
+            <router-view></router-view>
+        </keep-alive>
     </div>
 
 </template>
