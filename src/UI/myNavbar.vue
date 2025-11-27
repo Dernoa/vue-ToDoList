@@ -6,8 +6,8 @@
             </h1>
         </div>
         <div class="navbar-btn">
-            <my-button>Main</my-button>
-            <my-button>About Us</my-button>
+            <my-button @click="$router.push('/')">Main</my-button>
+            <my-button @click="$router.push('/aboutUs')">About Us</my-button>
         </div>
     </div>
 </template>

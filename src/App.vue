@@ -1,29 +1,19 @@
 <template>
     <div class="app">
-        <div>
-            <my-navbar class="navbar-app"></my-navbar>
-        </div>
-        <div>
-            <todo-create></todo-create>
-        </div>
-        <div>
-            <todo-view></todo-view>
-        </div>
+        <my-navbar class="navbar-app"></my-navbar>
+        <keep-alive>
+            <router-view></router-view>
+        </keep-alive>
     </div>
 
 </template>
 
 <script>
-import TodoCreate from './components/todoCreate.vue';
 import MyNavbar from './UI/myNavbar.vue';
-import todoView from './components/todoView.vue';
-import TodoView from './components/todoView.vue';
 
     export default {
         components: {
             MyNavbar,
-            TodoCreate,
-            TodoView,
         }
     }
 </script>
