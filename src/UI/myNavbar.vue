@@ -12,12 +12,8 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import MyButton from './myButton.vue';
-
-    export default {
-        components: {MyButton}
-    }
 </script>
 
 <style scoped>

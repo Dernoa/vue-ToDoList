@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <div class="taskBtn">
-                            <confirm-modal :task="task.id"></confirm-modal>>
+                            <confirm-modal :task="task.id"></confirm-modal>
                         </div>
                     </div>
                 </div>
@@ -79,48 +79,40 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue';
 import { useTaskStore } from '@/stores/taskStore';
 import MyButton from '@/UI/myButton.vue';
 import ConfirmModal from './confirmModal.vue';
 
-    export default {
-        
-        data(){
-            return{
-                taskStore: useTaskStore(),
-            }
-        },
-        components: {MyButton, ConfirmModal},
-        methods: {
-            removeTask(id){
-                if (id === undefined || id === null){
-                    return;
-                }
-                this.taskStore.removeTask(id);
-            },
-            switchStatus(id, status){
-                if (id === undefined || id === null){
-                    return;
-                }
-                this.taskStore.switchStatus(id, status)
-            }
-        },
-        computed: {
-            tasksToDo(){
-                return Array.from(this.taskStore.tasks.values()).filter((item) => item.status == 'todo')
-            },
-            tasksInProgress(){
-                return Array.from(this.taskStore.tasks.values()).filter((item) => item.status == 'in-progress')
-            },
-            tasksDone(){
-                return Array.from(this.taskStore.tasks.values()).filter((item) => item.status == 'done')
-            },
-            tasksCancelled(){
-                return Array.from(this.taskStore.tasks.values()).filter((item) => item.status == 'cancelled')
-            },
-        }
+const taskStore = useTaskStore(); 
+
+function removeTask(id){
+    if (id === undefined || id === null){
+        return;
     }
+    taskStore.removeTask(id);
+}
+
+function switchStatus(id,status){
+    if (id === undefined || id === null){
+        return;
+    }
+    taskStore.switchStatus(id, status)
+}
+
+const tasksToDo = computed(()=>{
+    return Array.from(taskStore.tasks.values()).filter((item) => item.status == 'todo');
+});
+const tasksInProgress = computed(()=>{
+    return Array.from(taskStore.tasks.values()).filter((item) => item.status == 'in-progress');
+});
+const tasksDone = computed(()=>{
+    return Array.from(taskStore.tasks.values()).filter((item) => item.status == 'done');
+});
+const tasksCancelled = computed(()=>{
+    return Array.from(taskStore.tasks.values()).filter((item) => item.status == 'cancelled');
+})
 </script>
 
 <style scoped>

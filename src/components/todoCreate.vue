@@ -17,38 +17,31 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { reactive } from 'vue';
 import MyButton from '@/UI/myButton.vue';
 import MyInput from '@/UI/myInput.vue';
 import { useTaskStore } from '@/stores/taskStore';
 
-    export default {
-        components: {MyInput, MyButton},
-        data(){
-            return {
-                taskStore: useTaskStore(),
-                task: {
-                    title:'',
-                    description:'',
-                    status: '',
-                    id: Date.now(),
-                },
-            }
-        },
-        methods:{
-            pushTask(){
-                if (this.task.title == ''){
-                    alert('Write something in task title')
-                    return
-                }
-                this.task.status = this.taskStore.taskStatus[0];
-                this.taskStore.pushTask(this.task)
-                this.task.title = '';
-                this.task.description = '';
-                this.task.id = Date.now();
-            },
-        }
+const taskStore = useTaskStore();
+const task = reactive({
+    title: '',
+    description: '',
+    status:'',
+    id: Date.now(),
+})
+
+function pushTask(){
+    if (task.title == ''){
+        alert('Write something in task title')
+        return
     }
+    task.status = taskStore.taskStatus[0];
+    taskStore.pushTask(task)
+    task.title = '';
+    task.description = '';
+    task.id = Date.now();    
+}
 </script>
 
 <style scoped>

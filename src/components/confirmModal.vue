@@ -16,33 +16,26 @@
     </teleport>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
 import MyButton from '@/UI/myButton.vue';
 import { useTaskStore } from '@/stores/taskStore';
 
-    export default {
-        data(){
-            return{
-                open: false,
-                taskStore: useTaskStore()
-            }
-        },
-        components:{
-            MyButton,
-        },
-        methods:{
-            removeTask(id){
-                if (id === undefined || id === null){
-                    return;
-                }
-                this.taskStore.removeTask(id);
-                this.open = false;
-            },
-        },
-        props:{
-            task: Number,
-        }
+const taskStore = useTaskStore();
+
+let open = ref(false);
+
+function removeTask(id){
+    if (id === undefined || id === null){
+        return;
     }
+    taskStore.removeTask(id);
+    open.value = false;    
+}
+
+defineProps({
+    task: Number,
+});
 </script>
 
 <style scoped>
