@@ -3,103 +3,30 @@
         <div>
             <h2>ToDo:</h2>
             <transition-group name="tasks">
-                <div v-for="task in tasksToDo" :key="task.id">
-                    <div class="taskContainerInfo">
-                        <div>
-                            <div>
-                                <h2>{{ task.title }}</h2>
-                            </div>
-                            <div>
-                                {{ task.description }}
-                            </div>
-                        </div>
-                        <div class="taskBtn">
-                            <my-button @click="switchStatus(task.id,1)">Start work</my-button>
-                        </div>
-                    </div>
-                </div>
+                <todo-view-element :task-array="tasksToDo"></todo-view-element>
             </transition-group>
             <h2>In-progress:</h2>
             <transition-group name="tasks">
-                <div v-for="task in tasksInProgress" :key="task.id">
-                    <div class="taskContainerInfo">
-                        <div>
-                            <div>
-                                <h2>{{ task.title }}</h2>
-                            </div>
-                            <div>
-                                {{ task.description }}
-                            </div>
-                        </div>
-                        <div class="taskBtn">
-                            <my-button @click="switchStatus(task.id,2)">Done</my-button>
-                            <my-button @click="switchStatus(task.id,3)">Cancell</my-button>
-                        </div>
-                    </div>
-                </div>
+                <todo-view-element :task-array="tasksInProgress"></todo-view-element>
             </transition-group>
             <h2>Done:</h2>
             <transition-group name="tasks">
-                <div v-for="task in tasksDone" :key="task.id">
-                    <div class="taskContainerInfo">
-                        <div>
-                            <div>
-                                <h2>{{ task.title }}</h2>
-                            </div>
-                            <div>
-                                {{ task.description }}
-                            </div>
-                        </div>
-                        <div class="taskBtn">
-                            <confirm-modal :task="task.id"></confirm-modal>
-                        </div>
-                    </div>
-                </div>
+                <todo-view-element :task-array="tasksDone"></todo-view-element>
             </transition-group>
             <h2>Cancelled:</h2>
             <transition-group name="tasks">
-                <div v-for="task in tasksCancelled" :key="task.id">
-                    <div class="taskContainerInfo">
-                        <div>
-                            <div>
-                                <h2>{{ task.title }}</h2>
-                            </div>
-                            <div>
-                                {{ task.description }}
-                            </div>
-                        </div>
-                        <div class="taskBtn">
-                            <my-button @click="switchStatus(task.id,1)">Start work</my-button>
-                            <confirm-modal :task="task.id"></confirm-modal>
-                        </div>
-                    </div>
-                </div>
+                <todo-view-element :task-array="tasksCancelled"></todo-view-element>
             </transition-group>
         </div>
     </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
 import { useTaskStore } from '@/stores/taskStore';
-import MyButton from '@/UI/myButton.vue';
-import ConfirmModal from './confirmModal.vue';
+import { computed } from 'vue';
+import TodoViewElement from './todoViewElement.vue';
 
 const taskStore = useTaskStore(); 
-
-function removeTask(id){
-    if (id === undefined || id === null){
-        return;
-    }
-    taskStore.removeTask(id);
-}
-
-function switchStatus(id,status){
-    if (id === undefined || id === null){
-        return;
-    }
-    taskStore.switchStatus(id, status)
-}
 
 const tasksToDo = computed(()=>{
     return Array.from(taskStore.tasks.values()).filter((item) => item.status == 'todo');
@@ -119,20 +46,7 @@ const tasksCancelled = computed(()=>{
 .taskContainer{
     margin: 5px;
 }
-.taskContainerInfo{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border: 1px solid black;
-    border-radius: 15px;
-    margin-top: 5px;
-}
-.taskBtn{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 20px;
-}
+
 
 .tasks-enter-active,
 .tasks-leave-active {
