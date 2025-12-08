@@ -4,6 +4,8 @@ export const useTaskStore = defineStore("taskStore", {
     state: () => ({
         tasks: new Map(),
         taskStatus: ['todo','in-progress', 'done', 'cancelled'],
+        tasksFindIn: '',
+        tasksFindWhat: '',
     }),
     actions: {
         pushTask(task){

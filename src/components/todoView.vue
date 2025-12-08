@@ -29,17 +29,47 @@ import TodoViewElement from './todoViewElement.vue';
 const taskStore = useTaskStore(); 
 
 const tasksToDo = computed(()=>{
-    return Array.from(taskStore.tasks.values()).filter((item) => item.status == 'todo');
+    return Array.from(taskStore.tasks.values()).filter((item) => {
+        if (taskStore.tasksFindIn) {
+            return (item.status == 'todo' && item[taskStore.tasksFindIn].includes(taskStore.tasksFindWhat))
+        }
+        else {
+            return item.status == 'todo'
+        }
+    });
 });
-const tasksInProgress = computed(()=>{
-    return Array.from(taskStore.tasks.values()).filter((item) => item.status == 'in-progress');
+const tasksInProgress = computed(() => {
+    return Array.from(taskStore.tasks.values()).filter((item) => {
+        if (taskStore.tasksFindIn) {
+            return (item.status == 'in-progress' && item[taskStore.tasksFindIn].includes(taskStore.tasksFindWhat))
+        }
+        else {
+            return item.status == 'in-progress'
+        }
+    });
 });
-const tasksDone = computed(()=>{
-    return Array.from(taskStore.tasks.values()).filter((item) => item.status == 'done');
+
+const tasksDone = computed(() => {
+    return Array.from(taskStore.tasks.values()).filter((item) => {
+        if (taskStore.tasksFindIn) {
+            return (item.status == 'done' && item[taskStore.tasksFindIn].includes(taskStore.tasksFindWhat))
+        }
+        else {
+            return item.status == 'done'
+        }
+    });
 });
-const tasksCancelled = computed(()=>{
-    return Array.from(taskStore.tasks.values()).filter((item) => item.status == 'cancelled');
-})
+
+const tasksCancelled = computed(() => {
+    return Array.from(taskStore.tasks.values()).filter((item) => {
+        if (taskStore.tasksFindIn) {
+            return (item.status == 'cancelled' && item[taskStore.tasksFindIn].includes(taskStore.tasksFindWhat))
+        }
+        else {
+            return item.status == 'cancelled'
+        }
+    });
+});
 </script>
 
 <style scoped>
