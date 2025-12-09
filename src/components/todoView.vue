@@ -3,19 +3,19 @@
         <div>
             <h2>ToDo:</h2>
             <transition-group name="tasks">
-                <todo-view-element :task-array="tasksToDo"></todo-view-element>
+                <todo-view-element :task-array="groupTasksByStatus(allTasks,'todo')"></todo-view-element>
             </transition-group>
             <h2>In-progress:</h2>
             <transition-group name="tasks">
-                <todo-view-element :task-array="tasksInProgress"></todo-view-element>
+                <todo-view-element :task-array="groupTasksByStatus(allTasks,'in-progress')"></todo-view-element>
             </transition-group>
             <h2>Done:</h2>
             <transition-group name="tasks">
-                <todo-view-element :task-array="tasksDone"></todo-view-element>
+                <todo-view-element :task-array="groupTasksByStatus(allTasks,'done')"></todo-view-element>
             </transition-group>
             <h2>Cancelled:</h2>
             <transition-group name="tasks">
-                <todo-view-element :task-array="tasksCancelled"></todo-view-element>
+                <todo-view-element :task-array="groupTasksByStatus(allTasks,'cancelled')"></todo-view-element>
             </transition-group>
         </div>
     </div>
@@ -28,48 +28,20 @@ import TodoViewElement from './todoViewElement.vue';
 
 const taskStore = useTaskStore(); 
 
-const tasksToDo = computed(()=>{
+const allTasks = computed(() => {
     return Array.from(taskStore.tasks.values()).filter((item) => {
         if (taskStore.tasksFindIn) {
-            return (item.status == 'todo' && item[taskStore.tasksFindIn].includes(taskStore.tasksFindWhat))
-        }
-        else {
-            return item.status == 'todo'
-        }
-    });
-});
-const tasksInProgress = computed(() => {
-    return Array.from(taskStore.tasks.values()).filter((item) => {
-        if (taskStore.tasksFindIn) {
-            return (item.status == 'in-progress' && item[taskStore.tasksFindIn].includes(taskStore.tasksFindWhat))
-        }
-        else {
-            return item.status == 'in-progress'
+            return (item[taskStore.tasksFindIn].includes(taskStore.tasksFindWhat))
+        } else {
+            return true
         }
     });
-});
+})
 
-const tasksDone = computed(() => {
-    return Array.from(taskStore.tasks.values()).filter((item) => {
-        if (taskStore.tasksFindIn) {
-            return (item.status == 'done' && item[taskStore.tasksFindIn].includes(taskStore.tasksFindWhat))
-        }
-        else {
-            return item.status == 'done'
-        }
-    });
-});
+function groupTasksByStatus(array , status){
+    return array.filter((item) => item.status == status)
+}
 
-const tasksCancelled = computed(() => {
-    return Array.from(taskStore.tasks.values()).filter((item) => {
-        if (taskStore.tasksFindIn) {
-            return (item.status == 'cancelled' && item[taskStore.tasksFindIn].includes(taskStore.tasksFindWhat))
-        }
-        else {
-            return item.status == 'cancelled'
-        }
-    });
-});
 </script>
 
 <style scoped>
